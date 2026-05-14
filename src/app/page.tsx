@@ -1,5 +1,7 @@
+import { connectDB } from "@/lib/mongodb";
 
-export default function Home() {
+export default async function Home() {
+  await connectDB();
   return (
     <div>
 
