@@ -1,10 +1,7 @@
 "use client";
 
-import {
-  SignInButton,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
+import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import { useState } from "react";
 
 import { BsTwitterX } from "react-icons/bs";
 import {
@@ -14,22 +11,49 @@ import {
   FaRegMoon,
 } from "react-icons/fa";
 
-import { IoSearch } from "react-icons/io5";
+import { IoClose, IoSearch } from "react-icons/io5";
 
 function TopNav() {
   const { isSignedIn } = useUser();
+  const [isOpenSearch, setIsOpenSearch] = useState(false);
+
+  const handleSearch = () => {
+    setIsOpenSearch(true);
+  };
 
   return (
-    <div className="flex items-center justify-between p-4">
+    <div className="flex items-center justify-between p-3">
       <div className="flex items-center gap-1">
         <FaBlog size={38} />
-        <p className="text-xl md:text-2xl font-semibold">
-          Blogs
-        </p>
+        <p className="text-xl md:text-2xl font-semibold">Blogs</p>
       </div>
 
       <div className="flex items-center gap-5">
-        <IoSearch size={22} className="cursor-pointer" />
+        {/* Search */}
+        <div className="flex items-center gap-2">
+          {isOpenSearch && (
+            <form action="/search" className="flex items-center border border-gray-300 rounded-md px-2 py-1">
+              <input
+                type="text"
+                placeholder="Search..."
+                className="outline-none bg-transparent"
+              />
+
+              <IoClose
+                size={20}
+                className="cursor-pointer"
+                onClick={() => setIsOpenSearch(false)}
+              />
+            </form>
+          )}
+
+          <IoSearch
+            onClick={handleSearch}
+            size={22}
+            className="cursor-pointer"
+          />
+        </div>
+
         <FaRegMoon size={22} className="cursor-pointer" />
         <BsTwitterX size={22} className="cursor-pointer" />
         <FaFacebook size={22} className="cursor-pointer" />
@@ -49,8 +73,6 @@ function TopNav() {
           ) : (
             <>
               <UserButton />
-
-              
             </>
           )}
         </div>
